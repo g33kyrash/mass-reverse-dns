@@ -1,4 +1,4 @@
-# mass_reverse_dns
+# mass reverse dns
 It can do reverse dns lookups from a range of given IP's or a whole subnet.
 
 usage: reverse_dns.py [-h] [-ir IP Range] [-is Subnet] [-f Output file]
