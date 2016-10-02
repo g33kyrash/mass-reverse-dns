@@ -1,7 +1,6 @@
 # mass reverse dns
 A reverse dns lookup tool for a range of given IP's or a whole subnet.
 
-It can do mass reverse lookups of any given IP range/class.
 
 usage: `reverse_dns.py [-h] [-ir IP Range] [-is Subnet] [-f Output file]`
 
