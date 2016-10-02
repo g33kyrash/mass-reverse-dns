@@ -11,4 +11,4 @@ usage: `reverse_dns.py [-h] [-ir IP Range] [-is Subnet] [-f Output file]`
     -f Output file  write output to a file
 
 
-![alt tag]http://i.imgur.com/PU84A8f.png
+![alt tag](http://i.imgur.com/PU84A8f.png)
