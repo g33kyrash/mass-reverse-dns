@@ -8,6 +8,8 @@ import netaddr
 import argparse
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-il", dest="file_input",
+                    help="eg: ip_list.txt", metavar="File Input")
 parser.add_argument("-ir", dest="ip_ranges",
                     help="eg: 192.168.0.1-192.168.2.0", metavar="IP Range")
 parser.add_argument("-is", dest="subnet",
@@ -54,8 +56,7 @@ def iterate_ip_ranges(first_range,last_range):
 			global total
 			total = len(ip_range)
 			for ip in ip_range:
-				cmd = "host %s 8.8.8.8" %ip
-				resolve_ptr(cmd,ip)
+				resolve_ptr(ip)
 			stats()
 		else:
 			print "Error: IP range is not continuous!\n"
@@ -74,8 +75,7 @@ def iterate_ip_subnet(subnet):
 		global total
 		total = len(ip_range)
 		for ip in ip_range:
-			cmd = "host %s 8.8.8.8" %ip
-			resolve_ptr(cmd,ip)
+			resolve_ptr(ip)
 		stats()
 	except netaddr.core.AddrFormatError:
 		print "\nError: Invalid IP Network entered."
@@ -84,7 +84,8 @@ def iterate_ip_subnet(subnet):
 		sys.exit(0)
 				
 
-def resolve_ptr(cmd,ip):
+def resolve_ptr(ip):
+	cmd = "host %s 8.8.8.8" %ip
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True).communicate()[0]
 	
 	match_found = re.search('name pointer',p)
@@ -100,6 +101,9 @@ def resolve_ptr(cmd,ip):
 		
 	elif match_not_found:
 		not_found_count+=1
+		# print ip+" - Not found!"
+		# if save_flag:
+		# 	f.write(ip+" - Not found!"+"\n")
 		pass
 
 	elif connection_timed_out:
@@ -143,5 +147,17 @@ if args.ip_ranges:
 if args.subnet:
 	subnet = str(args.subnet)
 	iterate_ip_subnet(subnet)
+
+if args.file_input:
+	file = open(args.file_input,'r').readlines()
+	save_output()
+	for ip in file:
+		ip = ip.strip('\n')
+		resolve_ptr(ip)
+		total+=1
+	stats()
+
+
+
 	
 	
